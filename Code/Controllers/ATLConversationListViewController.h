@@ -19,7 +19,7 @@
 //
 
 #import <UIKit/UIKit.h>
-@import LayerKit;
+#import <LayerKit/LayerKit.h>
 #import "ATLConversationTableViewCell.h"
 #import "ATLAvatarItem.h"
 #import "ATLParticipant.h"
@@ -191,6 +191,8 @@ NS_ASSUME_NONNULL_BEGIN
  */
 @property (nonatomic) LYRClient *layerClient;
 
+@property (nonatomic) UISearchBar *searchBar;
+
 /**
  @abstract The `LYRQueryController` object managing data displayed in the controller.
  */
@@ -260,7 +262,10 @@ NS_ASSUME_NONNULL_BEGIN
 /**
  @abstract The controller used to display search results.
  */
-@property (nonatomic, readonly) UISearchController *searchController;
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wdeprecated-declarations"
+@property (nonatomic, readonly) UISearchDisplayController *searchController;
+#pragma GCC diagnostic pop
 
 /**
  @abstract A boolean value that determines if the controller should show a search bar and search display controller.

@@ -85,6 +85,7 @@ extern NSString *const ATLMessageInputToolbarAccessibilityLabel;
  property.
  */
 - (void)insertMediaAttachment:(ATLMediaAttachment *)mediaAttachment withEndLineBreak:(BOOL)endLineBreak;
+- (void)configureRightAccessoryButtonState;
 
 //-----------------------------
 // UI Customization

@@ -35,7 +35,6 @@ static NSString *const ATLParticipantCellIdentifier = @"ATLParticipantCellIdenti
 @property (nonatomic) NSMutableSet *selectedParticipants;
 @property (nonatomic) UISearchBar *searchBar;
 @property (nonatomic) BOOL hasAppeared;
-@property (nonatomic) BOOL isObservingParticipants;
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wdeprecated-declarations"
@@ -83,11 +82,6 @@ NSString *const ATLParticipantTableViewControllerTitle = @"Participants";
     _selectedParticipants = [[NSMutableSet alloc] init];
 }
 
-- (void)dealloc
-{
-    [self stopObservingParticipants];
-}
-
 - (void)loadView
 {
     self.view = [[UITableView alloc] initWithFrame:CGRectZero style:UITableViewStylePlain];
@@ -132,7 +126,6 @@ NSString *const ATLParticipantTableViewControllerTitle = @"Participants";
         self.tableView.allowsMultipleSelection = self.allowsMultipleSelection;
         [self.tableView registerClass:self.cellClass forCellReuseIdentifier:ATLParticipantCellIdentifier];
         self.unfilteredDataSet = [ATLParticipantTableDataSet dataSetWithParticipants:self.participants sortType:self.sortType];
-        [self startObservingParticipants];
         [self.tableView reloadData];
     }
 }
@@ -320,71 +313,6 @@ NSString *const ATLParticipantTableViewControllerTitle = @"Participants";
     ATLParticipantTableDataSet *dataSet = [self dataSetForTableView:tableView];
     NSIndexPath *indexPath = [dataSet indexPathForParticipant:participant];
     return indexPath;
-}
-
-#pragma mark - Notification Handlers
-
-- (void)startObservingParticipants
-{
-    if (!self.isObservingParticipants) {
-        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(layerClientObjectsDidChange:) name:LYRClientObjectsDidChangeNotification object:nil];
-        self.isObservingParticipants = YES;
-    }
-}
-
-- (void)stopObservingParticipants
-{
-    if (self.isObservingParticipants) {
-        [[NSNotificationCenter defaultCenter] removeObserver:self name:LYRClientObjectsDidChangeNotification object:nil];
-        self.isObservingParticipants = NO;
-    }
-}
-
-- (void)layerClientObjectsDidChange:(NSNotification *)notification
-{
-    NSArray *changes = notification.userInfo[LYRClientObjectChangesUserInfoKey];
-    NSInteger changeCount = 0;
-    for (LYRObjectChange *change in changes) {
-        // Interested only in LYRIdentity objects who are potential participants.
-        if (![change.object isKindOfClass:[LYRIdentity class]]) {
-            continue;
-        }
-        if (![change.object conformsToProtocol:@protocol(ATLParticipant)]) {
-            continue;
-        }
-
-        id<ATLParticipant> particpant = change.object;
-
-        switch (change.type) {
-            case LYRObjectChangeTypeCreate:
-                [self.unfilteredDataSet addParticipant:particpant];
-                changeCount++;
-                break;
-
-            case LYRObjectChangeTypeUpdate:
-                [self.unfilteredDataSet particpant:particpant updatedProperty:change.property];
-                changeCount++;
-                break;
-
-            case LYRObjectChangeTypeDelete:
-                [self.unfilteredDataSet removeParticipant:particpant];
-                changeCount++;
-                break;
-
-            default:
-                NSAssert(YES, @"Unrecognized LYRObjectChangeType.");
-                break;
-        }
-    }
-
-    if (changeCount > 0) {
-        [self.tableView reloadData];
-
-        // Perform the search again to update self.filteredDataSet
-        if (self.searchController.isActive) {
-            [self searchDisplayController:self.searchController shouldReloadTableForSearchString:self.searchController.searchBar.text];
-        }
-    }
 }
 
 @end

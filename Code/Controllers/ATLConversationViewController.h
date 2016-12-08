@@ -19,7 +19,7 @@
 //
 
 #import <UIKit/UIKit.h>
-@import LayerKit;
+#import <LayerKit/LayerKit.h>
 #import <MapKit/MapKit.h>
 #import "ATLParticipant.h"
 #import "ATLBaseConversationViewController.h"
@@ -97,7 +97,7 @@ NS_ASSUME_NONNULL_BEGIN
  current conversation for the controller. If implemented, applications should also register custom `UICollectionViewCell` classes with the controller via
  a call to `registerClass:forMessageCellWithReuseIdentifier:`. They should also implement the optional data source method, `conversationViewController:reuseIdentifierForMessage:`.
  */
-- (nullable NSOrderedSet <LYRMessage*> *)conversationViewController:(ATLConversationViewController *)viewController messagesForMediaAttachments:(NSArray <ATLMediaAttachment*> *)mediaAttachments;
+- (NSOrderedSet <LYRMessage*> *)conversationViewController:(ATLConversationViewController *)viewController messagesForMediaAttachments:(NSArray <ATLMediaAttachment*> *)mediaAttachments;
 
 @end
 

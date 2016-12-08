@@ -192,7 +192,7 @@ LYRMessage *ATLMessageForParts(LYRClient *layerClient, NSArray *messageParts, NS
     LYRPushNotificationConfiguration *defaultConfiguration = [LYRPushNotificationConfiguration new];
     defaultConfiguration.alert = pushText;
     defaultConfiguration.sound = pushSound;
-    defaultConfiguration.category = ATLUserNotificationDefaultActionsCategoryIdentifier;
+//    defaultConfiguration.category = ATLUserNotificationDefaultActionsCategoryIdentifier;
     
     LYRMessageOptions *messageOptions = [LYRMessageOptions new];
     messageOptions.pushNotificationConfiguration = defaultConfiguration;

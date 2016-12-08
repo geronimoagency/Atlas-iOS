@@ -18,12 +18,10 @@
 //  limitations under the License.
 //
 
+#define SYSTEM_VERSION_LESS_THAN(v) ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] == NSOrderedAscending)
+
 #import "ATLBaseConversationViewController.h"
 #import "ATLConversationView.h"
-
-static inline BOOL atl_systemVersionLessThan(NSString * _Nonnull systemVersion) {
-    return [[[UIDevice currentDevice] systemVersion] compare:systemVersion options:NSNumericSearch] == NSOrderedAscending;
-}
 
 @interface ATLBaseConversationViewController ()
 
@@ -93,13 +91,13 @@ static CGFloat const ATLMaxScrollDistanceFromBottom = 150;
     [self configureTypingIndicatorLayoutConstraints];
     
     // Add address bar if needed
-    if (self.displaysAddressBar) {
-        self.addressBarController = [[ATLAddressBarViewController alloc] init];
-        [self addChildViewController:self.addressBarController];
-        [self.view addSubview:self.addressBarController.view];
-        [self.addressBarController didMoveToParentViewController:self];
-        [self configureAddressbarLayoutConstraints];
-    }
+//    if (self.displaysAddressBar) {
+//        self.addressBarController = [[ATLAddressBarViewController alloc] init];
+//        [self addChildViewController:self.addressBarController];
+//        [self.view addSubview:self.addressBarController.view];
+//        [self.addressBarController didMoveToParentViewController:self];
+//        [self configureAddressbarLayoutConstraints];
+//    }
     [self atl_baseRegisterForNotifications];
 }
 
@@ -154,8 +152,8 @@ static CGFloat const ATLMaxScrollDistanceFromBottom = 150;
     [super viewWillDisappear:animated];
     
     self.messageInputToolbar.translucent = NO;
-    if (atl_systemVersionLessThan(@"10.0")) {
-        // Workaround for view's content flashing onscreen after pop animation concludes on iOS 9.
+    if (SYSTEM_VERSION_LESS_THAN(@"9.0")) {
+        // Workaround for view's content flashing onscreen after pop animation concludes on iOS 8.
         BOOL isPopping = ![self.navigationController.viewControllers containsObject:self];
         if (isPopping) {
             [self.messageInputToolbar.textInputView resignFirstResponder];

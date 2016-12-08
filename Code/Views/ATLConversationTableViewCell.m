@@ -74,7 +74,7 @@ static NSDateFormatter *ATLShortTimeFormatter()
 
 @implementation ATLConversationTableViewCell
 
-static CGFloat const ATLConversationLabelTopPadding = 8.0f;
+static CGFloat const ATLConversationLabelTopPadding = 25.0f;
 static CGFloat const ATLDateLabelRightPadding = 32.0f;
 static CGFloat const ATLLastMessageLabelRightPadding = 16;
 static CGFloat const ATLConversationTitleLabelRightPadding = 2.0f;
@@ -187,7 +187,7 @@ static CGFloat const ATLChevronIconViewRightPadding = 14.0f;
     [super layoutSubviews];
 
     self.separatorInset = UIEdgeInsetsMake(0, CGRectGetMinX(self.conversationTitleLabel.frame), 0, 0);
-    self.conversationImageView.layer.cornerRadius = CGRectGetHeight(self.conversationImageView.frame) / 2;
+    self.conversationImageView.layer.cornerRadius = 20;//CGRectGetHeight(self.conversationImageView.frame) / 2;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated
@@ -320,7 +320,7 @@ static CGFloat const ATLChevronIconViewRightPadding = 14.0f;
 
 - (void)configureConversationImageViewLayoutContraints
 {
-    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.conversationImageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeHeight multiplier:0.6 constant:0]];
+    [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.conversationImageView attribute:NSLayoutAttributeWidth relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeHeight multiplier:0.8 constant:0]];
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.conversationImageView attribute:NSLayoutAttributeHeight relatedBy:NSLayoutRelationEqual toItem:self.conversationImageView attribute:NSLayoutAttributeWidth multiplier:1 constant:0]];
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.conversationImageView attribute:NSLayoutAttributeLeft relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeLeft multiplier:1.0 constant:10]];
     [self.contentView addConstraint:[NSLayoutConstraint constraintWithItem:self.conversationImageView attribute:NSLayoutAttributeCenterY relatedBy:NSLayoutRelationEqual toItem:self.contentView attribute:NSLayoutAttributeCenterY multiplier:1.0 constant:0]];
